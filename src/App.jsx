@@ -1,15 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Body from './Components/Body'
+import appStore from "./utils/appStore";
+import "./App.css";
+import Body from "./Components/Body";
+import { Provider } from "react-redux";
+import { Bounce, ToastContainer } from "react-toastify";
+
 
 function App() {
-
-
   return (
-    <Body />
-  )
+    <Provider store={appStore}>
+      <ToastContainer
+        autoClose={1500}
+        position="top-center"
+        transition={Bounce}
+        hideProgressBar={true}
+      />
+      <Body />
+    </Provider>
+  );
 }
 
-export default App
+export default App;

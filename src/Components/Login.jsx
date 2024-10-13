@@ -1,20 +1,27 @@
 import React, { useRef, useState } from "react";
-import Header from "./Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkEmail, checkName, checkPassWord } from "../utils/Validate";
 import { auth } from "../utils/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+import Header from "./Header";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 function Login() {
   const [isSignForm, setIsSignForm] = useState(true);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState({
     email: null,
     password: null,
     name: null,
-    submit:null
+    submit: null,
   });
   const email = useRef(null);
   const password = useRef(null);
@@ -43,24 +50,47 @@ function Login() {
           email.current.value,
           password.current.value
         );
-        console.log("Signed in:", userCredential.user);
+        // console.log("Signed in:", userCredential.user);
+        navigate("/browse");
       } else {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email.current.value,
           password.current.value
         );
-        console.log("Signed up:", userCredential.user);
+        try {
+          await updateProfile(auth.currentUser, {
+            displayName: cName.current.value,
+            photoURL:
+              "https://avatars.githubusercontent.com/u/145029511?v=4&size=64",
+          });
+          const {uid,email,displayName,photoURL} = auth.currentUser
+          dispatch(
+            addUser({
+              uid: uid,
+              email: email,
+              displayName: displayName,
+              photoURL: photoURL,
+            })
+          );
+          navigate("/browse"); 
+        } catch (error) {
+          console.error("Error updating profile:", error); 
+        }
       }
     } catch (error) {
-      console.error(error.code);
+      console.error(error);
       if (error.code == "auth/invalid-credential")
-        setErrors({ ...error, submit: "invalid email and password"});
+        setErrors({ ...error, submit: "invalid email and password" });
     }
   };
   return (
     <div>
-      <Header />
+      <Header/>
+      {/* <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-full flex justify-between">
+        <img src="/images/netflix.png" alt="logo" className="w-[154px]" />
+      </div> */}
+
       <div className="absolute">
         <img
           src="https://assets.nflxext.com/ffe/siteui/vlv3/f272782d-cf96-4988-a675-6db2afd165e0/web/IN-en-20241008-TRIFECTA-perspective_b28b640f-cee0-426b-ac3a-7c000d3b41b7_large.jpg"
@@ -75,7 +105,9 @@ function Login() {
           {isSignForm ? "Sign In" : "Sign Up"}
         </h1>
         <div className="flex flex-col gap-4">
-          {errors.submit && <h1 className="text-red-600 -my-3">{errors.submit}</h1>}
+          {errors.submit && (
+            <h1 className="text-red-600 -my-3">{errors.submit}</h1>
+          )}
           {!isSignForm && (
             <>
               {errors.name && (
