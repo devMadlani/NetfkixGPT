@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import MovieList from "./MovieList";
+import { useSelector } from "react-redux";
 
 function SecondoryContainer() {
+  const movies = useSelector((store)=>store.movies)
   return (
-    <div className='absolute'>hello</div>
-  )
+    <div>
+      <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
+      <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
+    </div>
+  );
 }
 
-export default SecondoryContainer
+export default SecondoryContainer;

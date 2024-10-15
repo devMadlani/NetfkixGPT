@@ -4,7 +4,7 @@ import { addTrailerUrl } from "../utils/movieSlice";
 
 function useGetTrailer(id) {
   const dispatch = useDispatch();
-  console.log(id);
+  // console.log(id);
   const getTrailers = async () => {
     const url = `https://tvshow.p.rapidapi.com/Video/${id}/Movie?Language=en-US`;
     const options = {
@@ -18,9 +18,9 @@ function useGetTrailer(id) {
     try {
       const response = await fetch(url, options);
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       const trailer = result.find((res) => res.type === "Trailer");
-      console.log(trailer);
+      // console.log(trailer);
       if (trailer && trailer.url) {
         const videoId = new URL(trailer.url).searchParams.get("v");
         dispatch(
