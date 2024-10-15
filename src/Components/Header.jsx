@@ -1,25 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { auth } from "../utils/firebaseConfig";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, removeUser } from "../utils/userSlice";
 function Header() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-  console.log(user);
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         toast.success("Sign out successfully");
-
-        navigate("/");
       })
       .catch((error) => {});
   };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // console.log(auth.currentUser)
+      if (user) {
+        const { uid, email, displayName, photoURL } = auth.currentUser;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+
+        navigate("/");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
   return (
-    <div className={`absolute px-8 py-2 ${ !user && "bg-gradient-to-b from-black"} z-10 w-full flex justify-between`}>
+    <div
+      className={`absolute px-8 py-2 
+         ${!user && "bg-gradient-to-b from-black" } 
+         ${user && "sticky top-0 bg-[(255,255,2555,1)]"}
+         z-10 w-full flex justify-between`}
+    >
       <div className="inline-flex">
         <img src="/images/netflix.png" alt="logo" className="w-[154px]" />
       </div>

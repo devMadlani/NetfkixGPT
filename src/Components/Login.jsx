@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { checkEmail, checkName, checkPassWord } from "../utils/Validate";
 import { auth } from "../utils/firebaseConfig";
 import {
@@ -8,15 +8,15 @@ import {
   updateProfile,
 } from "firebase/auth";
 import Header from "./Header";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BACK_URL, PHOTO_URL, MOVIE_API } from "../utils/constant";
+import { toast } from "react-toastify";
 
 function Login() {
   const [isSignForm, setIsSignForm] = useState(true);
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
+  const user = useSelector((store) => store?.user);
   const [errors, setErrors] = useState({
     email: null,
     password: null,
@@ -29,6 +29,7 @@ function Login() {
   const toggelForm = () => {
     setIsSignForm(!isSignForm);
   };
+
   const handleValidation = () => {
     const newErrors = {
       email: checkEmail(email.current.value),
@@ -50,8 +51,8 @@ function Login() {
           email.current.value,
           password.current.value
         );
+        toast.success("Sign in successfully");
         // console.log("Signed in:", userCredential.user);
-        navigate("/browse");
       } else {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -61,10 +62,12 @@ function Login() {
         try {
           await updateProfile(auth.currentUser, {
             displayName: cName.current.value,
-            photoURL:
-              "https://avatars.githubusercontent.com/u/145029511?v=4&size=64",
+            photoURL: PHOTO_URL,
           });
-          const {uid,email,displayName,photoURL} = auth.currentUser
+
+          const { uid, email, displayName, photoURL } = auth.currentUser;
+          toast.success(`Welcome ${displayName},`);
+
           dispatch(
             addUser({
               uid: uid,
@@ -73,9 +76,8 @@ function Login() {
               photoURL: photoURL,
             })
           );
-          navigate("/browse"); 
         } catch (error) {
-          console.error("Error updating profile:", error); 
+          console.error("Error updating profile:", error);
         }
       }
     } catch (error) {
@@ -86,16 +88,13 @@ function Login() {
   };
   return (
     <div>
-      <Header/>
+      <Header />
       {/* <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-full flex justify-between">
         <img src="/images/netflix.png" alt="logo" className="w-[154px]" />
       </div> */}
 
       <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/f272782d-cf96-4988-a675-6db2afd165e0/web/IN-en-20241008-TRIFECTA-perspective_b28b640f-cee0-426b-ac3a-7c000d3b41b7_large.jpg"
-          alt=""
-        />
+        <img src={BACK_URL} alt="" />
       </div>
       <form
         action=""
