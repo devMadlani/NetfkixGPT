@@ -4,7 +4,7 @@ function VideoTitle(props) {
 
  const { title, overview, backIMG } = props;
   return (
-    <div className="absolute w-full pt-[10%] h-[100vh] flex z-20  bg-gradient-to-r from-black ">
+    <div className="absolute pt-[10%]  flex ">
       <div className="text-center transition-transform duration-500 ml-3 ">
         <div className="flex flex-col gap-4 max-w-1/2 ml-12">
           <div className="max-w-[500px] ml-12">

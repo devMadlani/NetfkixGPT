@@ -42,9 +42,9 @@ function Header() {
   }, []);
   return (
     <div
-      className={` px-2 py-2 sm:px-8 sm:py-2  
+      className={`absolute px-2 py-2 sm:px-8 sm:py-2  
          ${!user && "absolute bg-gradient-to-b from-black"} 
-         ${user && " bg-[(255,255,2555,1)] bg-black"}
+         ${user && " bg-[(255,255,2555,1)] "}
          z-10 w-full flex justify-between`}
     >
       <div className="inline-flex ">
