@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { auth } from "../utils/firebaseConfig";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -42,9 +42,12 @@ function Header() {
   }, []);
   return (
     <div
-      className={`absolute px-8 py-2 
-         ${!user && "bg-gradient-to-b from-black" } 
-         ${user && "sticky top-0 bg-[(255,255,2555,1)]"}
+      className={`absolute px-2 py-2 sm:px-8 sm:py-2 
+         ${!user && "bg-gradient-to-b from-black"} 
+         ${
+           user &&
+           "sticky top-0 bg-[(255,255,2555,1)] bg-gradient-to-r from-black "
+         }
          z-10 w-full flex justify-between`}
     >
       <div className="inline-flex">
