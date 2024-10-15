@@ -11,9 +11,10 @@ function MainContainer() {
   const { originalTitle, overview, image, id } = mainMovie;
   console.log(id)
   return (
-    <div className="">
+    <div>
       <VideoTitle title={originalTitle} overview={overview} backIMG={image} />
       <VideoBack id={id} />
+    
     </div>
   );
 }

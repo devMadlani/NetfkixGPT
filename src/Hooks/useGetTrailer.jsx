@@ -24,9 +24,7 @@ function useGetTrailer(id) {
       if (trailer && trailer.url) {
         const videoId = new URL(trailer.url).searchParams.get("v");
         dispatch(
-          addTrailerUrl(
-            `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1&modestbranding=1&showinfo=0&rel=0`
-          )
+          addTrailerUrl(videoId)
         );
       } else {
         console.error("Official Trailer not found");
@@ -38,7 +36,7 @@ function useGetTrailer(id) {
 
   useEffect(() => {
     getTrailers();
-  }, []);
+  }, [id]);
 }
 
 export default useGetTrailer;

@@ -42,15 +42,12 @@ function Header() {
   }, []);
   return (
     <div
-      className={`absolute px-2 py-2 sm:px-8 sm:py-2 
-         ${!user && "bg-gradient-to-b from-black"} 
-         ${
-           user &&
-           "sticky top-0 bg-[(255,255,2555,1)] bg-gradient-to-r from-black "
-         }
+      className={` px-2 py-2 sm:px-8 sm:py-2  
+         ${!user && "absolute bg-gradient-to-b from-black"} 
+         ${user && " bg-[(255,255,2555,1)] bg-black"}
          z-10 w-full flex justify-between`}
     >
-      <div className="inline-flex">
+      <div className="inline-flex ">
         <img src="/images/netflix.png" alt="logo" className="w-[154px]" />
       </div>
 
