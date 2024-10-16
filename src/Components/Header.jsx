@@ -6,15 +6,25 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import { toggelGptSearch } from "../utils/gptSlice";
+import { SUPPORTED_LANGUAGES } from "../utils/constant";
+import { changeLanguage } from "../utils/configSlice";
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-
+  const handleLanguageChange = (e)=>{
+    dispatch(changeLanguage(e.target.value))
+  }
+  const handleGptSearch = () => {
+    dispatch(toggelGptSearch());
+  };
+  const gptSearch = useSelector((store) => store.gpt.showGptSearch);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         toast.success("Sign out successfully");
+        navigate("/");
       })
       .catch((error) => {});
   };
@@ -34,7 +44,6 @@ function Header() {
         navigate("/browse");
       } else {
         dispatch(removeUser());
-
         navigate("/");
       }
     });
@@ -53,6 +62,26 @@ function Header() {
 
       {user && (
         <div className="inline-flex gap-4">
+          {gptSearch && (
+            <select
+              className="p-2 bg-black text-white m-3"
+              onChange={handleLanguageChange}
+              name=""
+              id=""
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
+          <button
+            className="py-[10px] hover:shadow-[rgb(105,81,89)] w-24 hover:shadow my-auto text-sm rounded text-white bg-[rgb(105,81,89)] "
+            onClick={handleGptSearch}
+          >
+            {gptSearch ? "Home" : "GPT Search"}
+          </button>
           <div className="my-auto ">
             <img
               src={user?.photoURL}
