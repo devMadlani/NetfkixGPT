@@ -10,15 +10,15 @@ function useGetTrailer(id) {
     const options = {
       method: "GET",
       headers: {
-        "x-rapidapi-key": "155e74d4e7msh30cda815f6400a6p1d68f0jsnb937796fa364",
+        "x-rapidapi-key": "c7db4ccabbmsh8bf7fe83717f335p12127fjsnc03cd100cb48",
         "x-rapidapi-host": "tvshow.p.rapidapi.com",
       },
     };
 
     try {
       const response = await fetch(url, options);
+      console.log(await response.json());
       const result = await response.json();
-      // console.log(result);
       const trailer = result.find((res) => res.type === "Trailer");
       // console.log(trailer);
       if (trailer && trailer.url) {
@@ -30,7 +30,7 @@ function useGetTrailer(id) {
         console.error("Official Trailer not found");
       }
     } catch (error) {
-      console.error("Error fetching trailer:", error);
+      console.error(error);
     }
   };
 

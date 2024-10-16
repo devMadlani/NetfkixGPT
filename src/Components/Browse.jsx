@@ -3,9 +3,11 @@ import Header from "./Header";
 import useFetchMovie from "../Hooks/useFetchMovie";
 import MainContainer from "./MainContainer";
 import SecondoryContainer from "./SecondoryContainer";
+import useFetchPopular from "../Hooks/useFetchPopular";
 
 function Browse() {
   useFetchMovie()
+  useFetchPopular()
   return (
     <div>
       <Header />

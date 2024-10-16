@@ -6,3 +6,5 @@ export const BACK_URL =
 
 export const MOVIE_API =
   "https://tvshow.p.rapidapi.com/Movie/Popular?Page=3&Language=en-US&Adult=true";
+const devmadlani = "c7db4ccabbmsh8bf7fe83717f335p12127fjsnc03cd100cb48";
+const devdds = "155e74d4e7msh30cda815f6400a6p1d68f0jsnb937796fa364";

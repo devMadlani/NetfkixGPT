@@ -6,9 +6,9 @@ function SecondoryContainer() {
   const movies = useSelector((store)=>store.movies)
   return (
     <div className="bg-black">
-      <div class="-mt-40 relative z-50 "></div>
+      <div className="-mt-40 relative z-50 "></div>
       <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
-      <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
+      <MovieList title={"Popular Movies"} movies={movies.popularMovies } />
     </div>
   );
 }
