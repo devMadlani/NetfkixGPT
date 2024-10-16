@@ -1,24 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addTrailerUrl } from "../utils/movieSlice";
+import { apiOptions } from "../utils/constant";
 
 function useGetTrailer(id) {
   const dispatch = useDispatch();
-  // console.log(id);
+  console.log(id);
   const getTrailers = async () => {
     const url = `https://tvshow.p.rapidapi.com/Video/${id}/Movie?Language=en-US`;
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "c7db4ccabbmsh8bf7fe83717f335p12127fjsnc03cd100cb48",
-        "x-rapidapi-host": "tvshow.p.rapidapi.com",
-      },
-    };
-
+    const options = apiOptions
     try {
       const response = await fetch(url, options);
-      console.log(await response.json());
       const result = await response.json();
+      console.log(result)
       const trailer = result.find((res) => res.type === "Trailer");
       // console.log(trailer);
       if (trailer && trailer.url) {
